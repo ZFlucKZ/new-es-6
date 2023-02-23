@@ -39,7 +39,7 @@ app.get("/book", (req, res) => {
       return res.send({ error: false, data: results, message: message });
     });
   } catch (error) {
-    console.log(error);
+    res.send({ error: true, data: results, message: error.message });
   }
 });
 
@@ -62,13 +62,13 @@ app.post("/esp", (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
+    res.send({ error: true, data: results, message: error.message });
   }
 });
 
 const PORT = process.env.PORT || 9461;
 
 app.listen(PORT, () => {
-  console.log("Node app is running or port 9461");
+  console.log("Node app is running or port ", PORT);
 });
 module.exports = app;
