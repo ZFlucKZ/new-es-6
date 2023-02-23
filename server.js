@@ -66,7 +66,9 @@ app.post("/esp", (req, res) => {
   }
 });
 
-app.listen(9461, () => {
+const PORT = process.env.PORT || 9461;
+
+app.listen(PORT, () => {
   console.log("Node app is running or port 9461");
 });
 module.exports = app;
