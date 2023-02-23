@@ -27,16 +27,20 @@ dbCon.connect();
 
 // retrieve all books
 app.get("/book", (req, res) => {
-  dbCon.query("SELECT * FROM nodejs", (error, results, fields) => {
-    if (error) return res.send({ error: true, message: "Error" });
-    let message = "";
-    if (results === undefined || results.length == 0) {
-      message = "NodeJS table is emty";
-    } else {
-      message = "Susscessfully retrieved all ";
-    }
-    return res.send({ error: false, data: results, message: message });
-  });
+  try {
+    dbCon.query("SELECT * FROM nodejs", (error, results, fields) => {
+      if (error) res.send({ error: true, message: "Error" });
+      let message = "";
+      if (results === undefined || results.length == 0) {
+        message = "NodeJS table is emty";
+      } else {
+        message = "Susscessfully retrieved all ";
+      }
+      return res.send({ error: false, data: results, message: message });
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 date = Date.now();
@@ -44,17 +48,21 @@ console.log(date);
 
 // add a new book
 app.post("/esp", (req, res) => {
-  let name = req.body.name;
-  //let time = req.body.time;
+  try {
+    let name = req.body.name;
+    //let time = req.body.time;
 
-  // validation
-  if (!name) {
-    return res.status(400).send({ error: true, message: "Please provide book name and author." });
-  } else {
-    dbCon.query("INSERT INTO nodejs (name) VALUES(?)", [name], (error, results, fields) => {
-      if (error) return res.send({ error: true, message: "Error" });
-      return res.send({ error: false, data: results, message: "Book successfully added" });
-    });
+    // validation
+    if (!name) {
+      return res.status(400).send({ error: true, message: "Please provide book name and author." });
+    } else {
+      dbCon.query("INSERT INTO nodejs (name) VALUES(?)", [name], (error, results, fields) => {
+        if (error) res.send({ error: true, message: "Error" });
+        return res.send({ error: false, data: results, message: "Book successfully added" });
+      });
+    }
+  } catch (error) {
+    console.log(error);
   }
 });
 
